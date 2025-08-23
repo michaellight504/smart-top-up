@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Top Up</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; background: #f4f7fa; margin: 0; padding: 0; }
+    header { background: #0077cc; color: white; padding: 1.5rem; font-size: 1.5rem; font-weight: bold; }
+    section { margin: 2rem auto; max-width: 500px; padding: 1.5rem; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    input, select, button { width: 100%; padding: 0.8rem; margin: 0.5rem 0; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
+    button { background: #0077cc; color: white; border: none; cursor: pointer; font-weight: bold; }
+    button:hover { background: #005fa3; }
+    footer { margin-top: 2rem; font-size: 0.9rem; color: #555; }
+  </style>
+</head>
+<body>
+  <header>Smart Top Up</header>
+  <section>
+    <h2>Buy Data Instantly</h2>
+    <form id="topupForm">
+      <select id="network" required>
+        <option value="">Select Network</option>
+        <option value="mtn">MTN</option>
+        <option value="airtel">Airtel</option>
+        <option value="glo">Glo</option>
+        <option value="9mobile">9mobile</option>
+      </select>
+      <select id="plan" required>
+        <option value="">Select Data Plan</option>
+        <option value="1gb">1GB - ₦500</option>
+        <option value="3gb">3GB - ₦1200</option>
+        <option value="10gb">10GB - ₦3500</option>
+      </select>
+      <input type="text" id="phone" placeholder="Enter Phone Number" required />
+      <input type="email" id="email" placeholder="Enter Email" required />
+      <button type="submit">Pay & Top Up</button>
+    </form>
+  </section>
+  <footer>© 2025 Smart Top Up. All rights reserved.</footer>
+  <script>
+    document.getElementById('topupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Payment system not connected yet. This is demo only.');
+    });
+  </script>
+</body>
+</html>
