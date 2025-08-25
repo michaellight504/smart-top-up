@@ -2,281 +2,266 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>Smart Top Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Top-Up Dashboard</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f6fa;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #333;
     }
     header {
-      background: #2c3e50;
+      background: #2563eb;
       color: white;
-      padding: 15px;
+      padding: 1rem;
       text-align: center;
-      font-size: 22px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .wallet {
+      background: #1e40af;
+      color: white;
+      margin: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 1rem;
+    }
+    .tab {
+      padding: 0.7rem 1.5rem;
+      background: #e5e7eb;
+      border: none;
+      cursor: pointer;
+      margin: 0 0.5rem;
+      border-radius: 8px;
       font-weight: bold;
     }
-    .container {
-      display: flex;
-    }
-    .sidebar {
-      width: 220px;
-      background: #34495e;
-      min-height: 100vh;
+    .tab.active {
+      background: #2563eb;
       color: white;
-      padding: 20px 0;
     }
-    .sidebar h3 {
-      text-align: center;
-      margin-bottom: 20px;
+    .form-section {
+      display: none;
+      background: white;
+      padding: 1rem;
+      margin: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .sidebar a {
+    .form-section.active {
       display: block;
-      padding: 12px 20px;
-      color: white;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .sidebar a:hover {
-      background: #2c3e50;
-    }
-    .content {
-      flex: 1;
-      padding: 20px;
-    }
-    h2 {
-      margin-top: 0;
-      color: #2c3e50;
-    }
-    .form-group {
-      margin-bottom: 15px;
     }
     label {
       display: block;
-      font-weight: bold;
-      margin-bottom: 5px;
+      margin: 0.5rem 0 0.2rem;
     }
-    select, input {
+    input, select {
       width: 100%;
-      padding: 10px;
+      padding: 0.6rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
       border: 1px solid #ccc;
-      border-radius: 5px;
     }
     button {
-      padding: 12px 20px;
-      background: #27ae60;
+      background: #16a34a;
       color: white;
       border: none;
-      border-radius: 5px;
-      font-size: 16px;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
     }
     button:hover {
-      background: #2ecc71;
+      background: #15803d;
+    }
+    .history {
+      margin: 1rem;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 25px;
-      background: white;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    table th, table td {
-      padding: 12px;
-      border: 1px solid #ddd;
+    th, td {
+      padding: 0.8rem;
+      border-bottom: 1px solid #ddd;
       text-align: center;
     }
-    table th {
-      background: #2c3e50;
+    th {
+      background: #2563eb;
       color: white;
     }
-    .success {
-      color: green;
-      font-weight: bold;
-      margin-top: 15px;
+    tr:nth-child(even) {
+      background: #f9fafb;
     }
-    .section {
-      background: white;
-      padding: 20px;
-      margin-bottom: 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    .eye {
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+  <header>🚀 Smart Top Up</header>
 
-  <header>Smart Top-Up</header>
+  <div class="wallet">
+    <span>Wallet Balance: ₦<span id="balance">5000</span></span>
+    <span class="eye" onclick="toggleBalance()">👁️</span>
+  </div>
 
-  <div class="container">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <h3>Menu</h3>
-      <a href="#">Dashboard</a>
-      <a href="#data">Buy Data</a>
-      <a href="#airtime">Buy Airtime</a>
-      <a href="#history">Transaction History</a>
-      <a href="#">Profile</a>
-    </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('data')">Buy Data</button>
+    <button class="tab" onclick="showTab('airtime')">Buy Airtime</button>
+  </div>
 
-    <!-- Content -->
-    <div class="content">
+  <!-- Buy Data Section -->
+  <div id="data" class="form-section active">
+    <h2>Buy Data</h2>
+    <label>Network</label>
+    <select id="dataNetwork">
+      <option value="MTN">MTN</option>
+      <option value="Glo">Glo</option>
+      <option value="Airtel">Airtel</option>
+      <option value="9mobile">9mobile</option>
+    </select>
 
-      <!-- Data Section -->
-      <div class="section" id="data">
-        <h2>Buy Data</h2>
-        <form id="dataForm">
-          <div class="form-group">
-            <label for="network">Network</label>
-            <select id="network" required>
-              <option value="">-- Select Network --</option>
-              <option value="MTN">MTN</option>
-              <option value="Airtel">Airtel</option>
-              <option value="Glo">Glo</option>
-              <option value="9mobile">9mobile</option>
-            </select>
-          </div>
+    <label>Data Type</label>
+    <select id="dataType">
+      <option value="SME">SME</option>
+      <option value="Gifting">Gifting</option>
+      <option value="Corporate">Corporate</option>
+    </select>
 
-          <div class="form-group">
-            <label for="datatype">Data Type</label>
-            <select id="datatype" required>
-              <option value="">-- Select Type --</option>
-              <option value="SME">SME</option>
-              <option value="Corporate">Corporate</option>
-              <option value="Gifting">Gifting</option>
-              <option value="Awoof">Awoof</option>
-            </select>
-          </div>
+    <label>Mobile Number</label>
+    <input type="text" id="dataNumber" placeholder="Enter Phone Number">
 
-          <div class="form-group">
-            <label for="number">Mobile Number</label>
-            <input type="tel" id="number" placeholder="e.g. 08012345678" required>
-          </div>
+    <label>Data Plan</label>
+    <select id="dataPlan">
+      <option value="1GB-500">1GB - ₦500 (30 Days)</option>
+      <option value="500MB-300">500MB - ₦300 (7 Days)</option>
+      <option value="2GB-900">2GB - ₦900 (30 Days)</option>
+      <option value="5GB-2000">5GB - ₦2000 (30 Days)</option>
+    </select>
 
-          <div class="form-group">
-            <label for="plan">Data Plan</label>
-            <select id="plan" required>
-              <option value="">-- Select Plan --</option>
-              <option value="500MB - ₦300 (7 Days)">500MB - ₦300 (7 Days)</option>
-              <option value="1GB - ₦500 (30 Days)">1GB - ₦500 (30 Days)</option>
-              <option value="2GB - ₦900 (30 Days)">2GB - ₦900 (30 Days)</option>
-              <option value="3GB - ₦1500 (30 Days)">3GB - ₦1500 (30 Days)</option>
-              <option value="5GB - ₦2500 (30 Days)">5GB - ₦2500 (30 Days)</option>
-            </select>
-          </div>
+    <button onclick="buyData()">Buy Data</button>
+  </div>
 
-          <button type="submit">Buy Now</button>
-        </form>
-        <div id="dataMessage" class="success"></div>
-      </div>
+  <!-- Buy Airtime Section -->
+  <div id="airtime" class="form-section">
+    <h2>Buy Airtime</h2>
+    <label>Network</label>
+    <select id="airtimeNetwork">
+      <option value="MTN">MTN</option>
+      <option value="Glo">Glo</option>
+      <option value="Airtel">Airtel</option>
+      <option value="9mobile">9mobile</option>
+    </select>
 
-      <!-- Airtime Section -->
-      <div class="section" id="airtime">
-        <h2>Buy Airtime</h2>
-        <form id="airtimeForm">
-          <div class="form-group">
-            <label for="airtimeNetwork">Network</label>
-            <select id="airtimeNetwork" required>
-              <option value="">-- Select Network --</option>
-              <option value="MTN">MTN</option>
-              <option value="Airtel">Airtel</option>
-              <option value="Glo">Glo</option>
-              <option value="9mobile">9mobile</option>
-            </select>
-          </div>
+    <label>Mobile Number</label>
+    <input type="text" id="airtimeNumber" placeholder="Enter Phone Number">
 
-          <div class="form-group">
-            <label for="airtimeNumber">Mobile Number</label>
-            <input type="tel" id="airtimeNumber" placeholder="e.g. 08012345678" required>
-          </div>
+    <label>Amount (₦)</label>
+    <input type="number" id="airtimeAmount" placeholder="Enter Amount">
 
-          <div class="form-group">
-            <label for="airtimeAmount">Amount (₦)</label>
-            <input type="number" id="airtimeAmount" placeholder="e.g. 500" required>
-          </div>
+    <button onclick="buyAirtime()">Buy Airtime</button>
+  </div>
 
-          <button type="submit">Recharge Now</button>
-        </form>
-        <div id="airtimeMessage" class="success"></div>
-      </div>
-
-      <!-- Transaction History -->
-      <div class="section" id="history">
-        <h2>Transaction History</h2>
-        <table id="historyTable">
-          <thead>
-            <tr>
-              <th>Date/Time</th>
-              <th>Type</th>
-              <th>Network</th>
-              <th>Plan/Amount</th>
-              <th>Mobile</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Transactions will appear here -->
-          </tbody>
-        </table>
-      </div>
-
-    </div>
+  <!-- Transaction History -->
+  <div class="history">
+    <h2>Transaction History</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date/Time</th>
+          <th>Service</th>
+          <th>Network</th>
+          <th>Details</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody">
+        <!-- Transactions will appear here -->
+      </tbody>
+    </table>
   </div>
 
   <script>
-    const dataForm = document.getElementById('dataForm');
-    const airtimeForm = document.getElementById('airtimeForm');
-    const dataMessage = document.getElementById('dataMessage');
-    const airtimeMessage = document.getElementById('airtimeMessage');
-    const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+    let balance = 5000;
+    let balanceVisible = true;
 
-    // Handle Data Purchase
-    dataForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const network = document.getElementById('network').value;
-      const datatype = document.getElementById('datatype').value;
-      const number = document.getElementById('number').value;
-      const plan = document.getElementById('plan').value;
-
-      if (network && datatype && number && plan) {
-        dataMessage.textContent = `${plan} for ${network} sent to ${number} ✅`;
-
-        const row = historyTable.insertRow();
-        row.insertCell(0).textContent = new Date().toLocaleString();
-        row.insertCell(1).textContent = "Data";
-        row.insertCell(2).textContent = network;
-        row.insertCell(3).textContent = plan + ` (${datatype})`;
-        row.insertCell(4).textContent = number;
-        row.insertCell(5).textContent = "Success ✅";
-
-        dataForm.reset();
+    function toggleBalance() {
+      const bal = document.getElementById("balance");
+      if (balanceVisible) {
+        bal.innerText = "****";
+      } else {
+        bal.innerText = balance;
       }
-    });
+      balanceVisible = !balanceVisible;
+    }
 
-    // Handle Airtime Purchase
-    airtimeForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const network = document.getElementById('airtimeNetwork').value;
-      const number = document.getElementById('airtimeNumber').value;
-      const amount = document.getElementById('airtimeAmount').value;
+    function showTab(tab) {
+      document.querySelectorAll(".form-section").forEach(sec => sec.classList.remove("active"));
+      document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(tab).classList.add("active");
+      event.target.classList.add("active");
+    }
 
-      if (network && number && amount) {
-        airtimeMessage.textContent = `₦${amount} Airtime for ${network} sent to ${number} ✅`;
+    function addHistory(service, network, details, phone, amount) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${new Date().toLocaleString()}</td>
+        <td>${service}</td>
+        <td>${network}</td>
+        <td>${details}</td>
+        <td>${phone}</td>
+        <td style="color:green;font-weight:bold;">Success</td>
+        <td>₦${amount}</td>
+      `;
+      document.getElementById("historyBody").prepend(row);
+    }
 
-        const row = historyTable.insertRow();
-        row.insertCell(0).textContent = new Date().toLocaleString();
-        row.insertCell(1).textContent = "Airtime";
-        row.insertCell(2).textContent = network;
-        row.insertCell(3).textContent = "₦" + amount;
-        row.insertCell(4).textContent = number;
-        row.insertCell(5).textContent = "Success ✅";
+    function buyData() {
+      const network = document.getElementById("dataNetwork").value;
+      const type = document.getElementById("dataType").value;
+      const phone = document.getElementById("dataNumber").value;
+      const plan = document.getElementById("dataPlan").value;
+      const amount = parseInt(plan.split("-")[1]);
 
-        airtimeForm.reset();
-      }
-    });
+      if (!phone) return alert("Enter phone number!");
+      if (balance < amount) return alert("Insufficient balance!");
+
+      balance -= amount;
+      document.getElementById("balance").innerText = balance;
+      addHistory("Data", network, `${type} ${plan.split("-")[0]}`, phone, amount);
+      alert("Data purchase successful!");
+    }
+
+    function buyAirtime() {
+      const network = document.getElementById("airtimeNetwork").value;
+      const phone = document.getElementById("airtimeNumber").value;
+      const amount = parseInt(document.getElementById("airtimeAmount").value);
+
+      if (!phone || !amount) return alert("Enter phone and amount!");
+      if (balance < amount) return alert("Insufficient balance!");
+
+      balance -= amount;
+      document.getElementById("balance").innerText = balance;
+      addHistory("Airtime", network, `₦${amount}`, phone, amount);
+      alert("Airtime purchase successful!");
+    }
   </script>
-
 </body>
 </html>
