@@ -1,48 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart Top Up</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Top-Up Dashboard</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #f4f7fa; margin: 0; padding: 0; }
-    header { background: #0077cc; color: white; padding: 1.5rem; font-size: 1.5rem; font-weight: bold; }
-    section { margin: 2rem auto; max-width: 500px; padding: 1.5rem; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    input, select, button { width: 100%; padding: 0.8rem; margin: 0.5rem 0; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
-    button { background: #0077cc; color: white; border: none; cursor: pointer; font-weight: bold; }
-    button:hover { background: #005fa3; }
-    footer { margin-top: 2rem; font-size: 0.9rem; color: #555; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    .container {
+      display: flex;
+    }
+    .sidebar {
+      width: 220px;
+      background: #34495e;
+      min-height: 100vh;
+      color: white;
+      padding: 20px 0;
+    }
+    .sidebar h3 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .sidebar a:hover {
+      background: #2c3e50;
+    }
+    .content {
+      flex: 1;
+      padding: 20px;
+    }
+    h2 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #27ae60;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2ecc71;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    table th, table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    table th {
+      background: #2c3e50;
+      color: white;
+    }
+    .success {
+      color: green;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
-  <header>Smart Top Up</header>
-  <section>
-    <h2>Buy Data Instantly</h2>
-    <form id="topupForm">
-      <select id="network" required>
-        <option value="">Select Network</option>
-        <option value="mtn">MTN</option>
-        <option value="airtel">Airtel</option>
-        <option value="glo">Glo</option>
-        <option value="9mobile">9mobile</option>
-      </select>
-      <select id="plan" required>
-        <option value="">Select Data Plan</option>
-        <option value="1gb">1GB - ₦500</option>
-        <option value="3gb">3GB - ₦1200</option>
-        <option value="10gb">10GB - ₦3500</option>
-      </select>
-      <input type="text" id="phone" placeholder="Enter Phone Number" required />
-      <input type="email" id="email" placeholder="Enter Email" required />
-      <button type="submit">Pay & Top Up</button>
-    </form>
-  </section>
-  <footer>© 2025 Smart Top Up. All rights reserved.</footer>
+
+  <header>Smart Top-Up</header>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h3>Menu</h3>
+      <a href="#">Dashboard</a>
+      <a href="#data">Buy Data</a>
+      <a href="#airtime">Buy Airtime</a>
+      <a href="#history">Transaction History</a>
+      <a href="#">Profile</a>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+      <!-- Data Section -->
+      <div class="section" id="data">
+        <h2>Buy Data</h2>
+        <form id="dataForm">
+          <div class="form-group">
+            <label for="network">Network</label>
+            <select id="network" required>
+              <option value="">-- Select Network --</option>
+              <option value="MTN">MTN</option>
+              <option value="Airtel">Airtel</option>
+              <option value="Glo">Glo</option>
+              <option value="9mobile">9mobile</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="datatype">Data Type</label>
+            <select id="datatype" required>
+              <option value="">-- Select Type --</option>
+              <option value="SME">SME</option>
+              <option value="Corporate">Corporate</option>
+              <option value="Gifting">Gifting</option>
+              <option value="Awoof">Awoof</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="number">Mobile Number</label>
+            <input type="tel" id="number" placeholder="e.g. 08012345678" required>
+          </div>
+
+          <div class="form-group">
+            <label for="plan">Data Plan</label>
+            <select id="plan" required>
+              <option value="">-- Select Plan --</option>
+              <option value="500MB - ₦300 (7 Days)">500MB - ₦300 (7 Days)</option>
+              <option value="1GB - ₦500 (30 Days)">1GB - ₦500 (30 Days)</option>
+              <option value="2GB - ₦900 (30 Days)">2GB - ₦900 (30 Days)</option>
+              <option value="3GB - ₦1500 (30 Days)">3GB - ₦1500 (30 Days)</option>
+              <option value="5GB - ₦2500 (30 Days)">5GB - ₦2500 (30 Days)</option>
+            </select>
+          </div>
+
+          <button type="submit">Buy Now</button>
+        </form>
+        <div id="dataMessage" class="success"></div>
+      </div>
+
+      <!-- Airtime Section -->
+      <div class="section" id="airtime">
+        <h2>Buy Airtime</h2>
+        <form id="airtimeForm">
+          <div class="form-group">
+            <label for="airtimeNetwork">Network</label>
+            <select id="airtimeNetwork" required>
+              <option value="">-- Select Network --</option>
+              <option value="MTN">MTN</option>
+              <option value="Airtel">Airtel</option>
+              <option value="Glo">Glo</option>
+              <option value="9mobile">9mobile</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="airtimeNumber">Mobile Number</label>
+            <input type="tel" id="airtimeNumber" placeholder="e.g. 08012345678" required>
+          </div>
+
+          <div class="form-group">
+            <label for="airtimeAmount">Amount (₦)</label>
+            <input type="number" id="airtimeAmount" placeholder="e.g. 500" required>
+          </div>
+
+          <button type="submit">Recharge Now</button>
+        </form>
+        <div id="airtimeMessage" class="success"></div>
+      </div>
+
+      <!-- Transaction History -->
+      <div class="section" id="history">
+        <h2>Transaction History</h2>
+        <table id="historyTable">
+          <thead>
+            <tr>
+              <th>Date/Time</th>
+              <th>Type</th>
+              <th>Network</th>
+              <th>Plan/Amount</th>
+              <th>Mobile</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Transactions will appear here -->
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
   <script>
-    document.getElementById('topupForm').addEventListener('submit', function(e) {
+    const dataForm = document.getElementById('dataForm');
+    const airtimeForm = document.getElementById('airtimeForm');
+    const dataMessage = document.getElementById('dataMessage');
+    const airtimeMessage = document.getElementById('airtimeMessage');
+    const historyTable = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+
+    // Handle Data Purchase
+    dataForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('Payment system not connected yet. This is demo only.');
+      const network = document.getElementById('network').value;
+      const datatype = document.getElementById('datatype').value;
+      const number = document.getElementById('number').value;
+      const plan = document.getElementById('plan').value;
+
+      if (network && datatype && number && plan) {
+        dataMessage.textContent = `${plan} for ${network} sent to ${number} ✅`;
+
+        const row = historyTable.insertRow();
+        row.insertCell(0).textContent = new Date().toLocaleString();
+        row.insertCell(1).textContent = "Data";
+        row.insertCell(2).textContent = network;
+        row.insertCell(3).textContent = plan + ` (${datatype})`;
+        row.insertCell(4).textContent = number;
+        row.insertCell(5).textContent = "Success ✅";
+
+        dataForm.reset();
+      }
+    });
+
+    // Handle Airtime Purchase
+    airtimeForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const network = document.getElementById('airtimeNetwork').value;
+      const number = document.getElementById('airtimeNumber').value;
+      const amount = document.getElementById('airtimeAmount').value;
+
+      if (network && number && amount) {
+        airtimeMessage.textContent = `₦${amount} Airtime for ${network} sent to ${number} ✅`;
+
+        const row = historyTable.insertRow();
+        row.insertCell(0).textContent = new Date().toLocaleString();
+        row.insertCell(1).textContent = "Airtime";
+        row.insertCell(2).textContent = network;
+        row.insertCell(3).textContent = "₦" + amount;
+        row.insertCell(4).textContent = number;
+        row.insertCell(5).textContent = "Success ✅";
+
+        airtimeForm.reset();
+      }
     });
   </script>
+
 </body>
 </html>
