@@ -1,267 +1,333 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Smart Top Up</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      margin: 0;
-      padding: 0;
-      color: #333;
-    }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .wallet {
-      background: #1e40af;
-      color: white;
-      margin: 1rem;
-      padding: 1rem;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin: 1rem;
-    }
-    .tab {
-      padding: 0.7rem 1.5rem;
-      background: #e5e7eb;
-      border: none;
-      cursor: pointer;
-      margin: 0 0.5rem;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    .tab.active {
-      background: #2563eb;
-      color: white;
-    }
-    .form-section {
-      display: none;
-      background: white;
-      padding: 1rem;
-      margin: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .form-section.active {
-      display: block;
-    }
-    label {
-      display: block;
-      margin: 0.5rem 0 0.2rem;
-    }
-    input, select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #16a34a;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    button:hover {
-      background: #15803d;
-    }
-    .history {
-      margin: 1rem;
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 0.8rem;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-    }
-    th {
-      background: #2563eb;
-      color: white;
-    }
-    tr:nth-child(even) {
-      background: #f9fafb;
-    }
-    .eye {
-      cursor: pointer;
-    }
+    body{font-family:Arial, sans-serif;background:#f4f7fb;margin:0;color:#111}
+    header{background:#2563eb;color:#fff;padding:14px;text-align:center;font-weight:700;box-shadow:0 4px 10px rgba(0,0,0,.08)}
+    .wrap{max-width:980px;margin:18px auto;padding:0 14px}
+    .wallet{background:#1e40af;color:#fff;padding:16px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 16px rgba(0,0,0,.12)}
+    .wallet .left{font-size:18px}
+    .wallet .amt{font-size:28px;font-weight:800;letter-spacing:.3px}
+    .eye{cursor:pointer;font-size:20px;user-select:none}
+    .tabs{display:flex;gap:10px;margin:18px 0}
+    .tab{flex:1;padding:12px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;font-weight:700;cursor:pointer}
+    .tab.active{background:#2563eb;color:#fff;border-color:#2563eb}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,.06);padding:16px;margin-bottom:18px}
+    label{display:block;margin:.5rem 0 .25rem;font-weight:700}
+    select,input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px}
+    button.action{background:#16a34a;color:#fff;border:none;padding:12px 18px;border-radius:12px;font-weight:700;cursor:pointer}
+    button.action:hover{background:#15803d}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media (max-width:720px){.grid{grid-template-columns:1fr}}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px;border-bottom:1px solid #eee;text-align:center}
+    th{background:#2563eb;color:#fff}
+    tr:nth-child(even){background:#fafbff}
+    .muted{color:#6b7280}
+    .ok{color:#16a34a;font-weight:700}
+    .warn{color:#dc2626;font-weight:700}
+    .note{font-size:13px;color:#6b7280;margin-top:6px}
   </style>
 </head>
 <body>
   <header>🚀 Smart Top Up</header>
 
-  <div class="wallet">
-    <span>Wallet Balance: ₦<span id="balance">5000</span></span>
-    <span class="eye" onclick="toggleBalance()">👁️</span>
+  <div class="wrap">
+    <!-- Wallet Banner -->
+    <div class="wallet card">
+      <div class="left">
+        <div class="muted">Wallet Balance</div>
+        <div class="amt" id="balanceText">₦0</div>
+        <div class="note" id="connNote">Connecting to database…</div>
+      </div>
+      <div class="eye" id="eyeBtn" title="Hide/Unhide">👁️</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" id="tabData">Buy Data</button>
+      <button class="tab" id="tabAirtime">Buy Airtime</button>
+    </div>
+
+    <!-- DATA FORM -->
+    <div class="card" id="sectionData">
+      <h3>Buy Data</h3>
+      <div class="grid">
+        <div>
+          <label for="dataNetwork">Network</label>
+          <select id="dataNetwork">
+            <option value="MTN">MTN</option>
+            <option value="Airtel">Airtel</option>
+            <option value="Glo">Glo</option>
+            <option value="9mobile">9mobile</option>
+          </select>
+        </div>
+        <div>
+          <label for="dataType">Data Type</label>
+          <select id="dataType">
+            <option value="SME">SME</option>
+            <option value="Gifting">Gifting</option>
+            <option value="Corporate">Corporate</option>
+          </select>
+        </div>
+        <div>
+          <label for="dataNumber">Mobile Number</label>
+          <input id="dataNumber" type="tel" placeholder="e.g. 08012345678" />
+        </div>
+        <div>
+          <label for="dataPlan">Data Plan</label>
+          <!-- value format: LABEL|||AMOUNT -->
+          <select id="dataPlan">
+            <option value="500MB - ₦300 (7 Days)|||300">500MB - ₦300 (7 Days)</option>
+            <option value="1GB - ₦500 (30 Days)|||500">1GB - ₦500 (30 Days)</option>
+            <option value="2GB - ₦900 (30 Days)|||900">2GB - ₦900 (30 Days)</option>
+            <option value="3GB - ₦1500 (30 Days)|||1500">3GB - ₦1500 (30 Days)</option>
+            <option value="5GB - ₦2500 (30 Days)|||2500">5GB - ₦2500 (30 Days)</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top:12px"><button class="action" id="btnBuyData">Buy Data</button></div>
+      <div class="note">Demo only: deducts from wallet & saves to Firestore.</div>
+    </div>
+
+    <!-- AIRTIME FORM -->
+    <div class="card" id="sectionAirtime" style="display:none">
+      <h3>Buy Airtime</h3>
+      <div class="grid">
+        <div>
+          <label for="airNetwork">Network</label>
+          <select id="airNetwork">
+            <option value="MTN">MTN</option>
+            <option value="Airtel">Airtel</option>
+            <option value="Glo">Glo</option>
+            <option value="9mobile">9mobile</option>
+          </select>
+        </div>
+        <div>
+          <label for="airNumber">Mobile Number</label>
+          <input id="airNumber" type="tel" placeholder="e.g. 08012345678" />
+        </div>
+        <div>
+          <label for="airAmount">Amount (₦)</label>
+          <input id="airAmount" type="number" min="50" step="50" placeholder="e.g. 500" />
+        </div>
+      </div>
+      <div style="margin-top:12px"><button class="action" id="btnBuyAirtime">Buy Airtime</button></div>
+      <div class="note">Demo only: deducts from wallet & saves to Firestore.</div>
+    </div>
+
+    <!-- HISTORY -->
+    <div class="card">
+      <h3>Transaction History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date/Time</th>
+            <th>Service</th>
+            <th>Network</th>
+            <th>Details</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody id="historyBody">
+          <!-- rows from Firestore -->
+        </tbody>
+      </table>
+      <div class="note">History updates live from Firestore (newest first).</div>
+    </div>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('data')">Buy Data</button>
-    <button class="tab" onclick="showTab('airtime')">Buy Airtime</button>
-  </div>
+  <!-- Firebase + App Logic -->
+  <script type="module">
+    // ---- Firebase SDK (CDN) ----
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, updateDoc,
+      collection, addDoc, serverTimestamp, onSnapshot, query, orderBy
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  <!-- Buy Data Section -->
-  <div id="data" class="form-section active">
-    <h2>Buy Data</h2>
-    <label>Network</label>
-    <select id="dataNetwork">
-      <option value="MTN">MTN</option>
-      <option value="Glo">Glo</option>
-      <option value="Airtel">Airtel</option>
-      <option value="9mobile">9mobile</option>
-    </select>
+    // 
+    const firebaseConfig = {
+      <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-    <label>Data Type</label>
-    <select id="dataType">
-      <option value="SME">SME</option>
-      <option value="Gifting">Gifting</option>
-      <option value="Corporate">Corporate</option>
-    </select>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCTAjbeOnV_nIDALH51GaStpV8HBvHyoH4",
+    authDomain: "smart-top-up-6c988.firebaseapp.com",
+    projectId: "smart-top-up-6c988",
+    storageBucket: "smart-top-up-6c988.firebasestorage.app",
+    messagingSenderId: "517543958513",
+    appId: "1:517543958513:web:101d8882dc84df7d821650",
+    measurementId: "G-Y1TZF2QZYD"
+  };
 
-    <label>Mobile Number</label>
-    <input type="text" id="dataNumber" placeholder="Enter Phone Number">
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+    };
 
-    <label>Data Plan</label>
-    <select id="dataPlan">
-      <option value="1GB-500">1GB - ₦500 (30 Days)</option>
-      <option value="500MB-300">500MB - ₦300 (7 Days)</option>
-      <option value="2GB-900">2GB - ₦900 (30 Days)</option>
-      <option value="5GB-2000">5GB - ₦2000 (30 Days)</option>
-    </select>
+    // Init
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-    <button onclick="buyData()">Buy Data</button>
-  </div>
+    // TEMP user (until we add real Auth)
+    const userId = "demoUser";
 
-  <!-- Buy Airtime Section -->
-  <div id="airtime" class="form-section">
-    <h2>Buy Airtime</h2>
-    <label>Network</label>
-    <select id="airtimeNetwork">
-      <option value="MTN">MTN</option>
-      <option value="Glo">Glo</option>
-      <option value="Airtel">Airtel</option>
-      <option value="9mobile">9mobile</option>
-    </select>
+    // UI refs
+    const balanceText = document.getElementById("balanceText");
+    const connNote = document.getElementById("connNote");
+    const historyBody = document.getElementById("historyBody");
+    const eyeBtn = document.getElementById("eyeBtn");
+    const tabData = document.getElementById("tabData");
+    const tabAirtime = document.getElementById("tabAirtime");
+    const sectionData = document.getElementById("sectionData");
+    const sectionAirtime = document.getElementById("sectionAirtime");
+    const btnBuyData = document.getElementById("btnBuyData");
+    const btnBuyAirtime = document.getElementById("btnBuyAirtime");
 
-    <label>Mobile Number</label>
-    <input type="text" id="airtimeNumber" placeholder="Enter Phone Number">
+    let showBalance = true;
+    let currentBalance = 0;
 
-    <label>Amount (₦)</label>
-    <input type="number" id="airtimeAmount" placeholder="Enter Amount">
+    function renderBalance() {
+      balanceText.textContent = showBalance ? `₦${Number(currentBalance).toLocaleString()}` : "₦****";
+    }
 
-    <button onclick="buyAirtime()">Buy Airtime</button>
-  </div>
+    // Tabs
+    tabData.addEventListener("click", () => {
+      tabData.classList.add("active"); tabAirtime.classList.remove("active");
+      sectionData.style.display = ""; sectionAirtime.style.display = "none";
+    });
+    tabAirtime.addEventListener("click", () => {
+      tabAirtime.classList.add("active"); tabData.classList.remove("active");
+      sectionAirtime.style.display = ""; sectionData.style.display = "none";
+    });
 
-  <!-- Transaction History -->
-  <div class="history">
-    <h2>Transaction History</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Date/Time</th>
-          <th>Service</th>
-          <th>Network</th>
-          <th>Details</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th>Amount</th>
-        </tr>
-      </thead>
-      <tbody id="historyBody">
-        <!-- Transactions will appear here -->
-      </tbody>
-    </table>
-  </div>
+    // Eye toggle
+    eyeBtn.addEventListener("click", () => { showBalance = !showBalance; renderBalance(); });
 
-  <script>
-    let balance = 5000;
-    let balanceVisible = true;
-
-    function toggleBalance() {
-      const bal = document.getElementById("balance");
-      if (balanceVisible) {
-        bal.innerText = "****";
+    // Ensure user document exists (with ₦5000 start)
+    async function ensureUser() {
+      const uref = doc(db, "users", userId);
+      const snap = await getDoc(uref);
+      if (!snap.exists()) {
+        await setDoc(uref, { walletBalance: 5000, createdAt: serverTimestamp() });
+        currentBalance = 5000;
       } else {
-        bal.innerText = balance;
+        currentBalance = Number(snap.data().walletBalance || 0);
       }
-      balanceVisible = !balanceVisible;
+      connNote.textContent = "Connected";
+      renderBalance();
+      liveHistory();
     }
 
-    function showTab(tab) {
-      document.querySelectorAll(".form-section").forEach(sec => sec.classList.remove("active"));
-      document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
-      document.getElementById(tab).classList.add("active");
-      event.target.classList.add("active");
+    // Live history listener
+    function liveHistory() {
+      const q = query(collection(db, "users", userId, "transactions"), orderBy("createdAt", "desc"));
+      onSnapshot(q, (qs) => {
+        historyBody.innerHTML = "";
+        qs.forEach(docSnap => {
+          const t = docSnap.data();
+          const tr = document.createElement("tr");
+          const date = t.createdAt?.toDate ? t.createdAt.toDate().toLocaleString() : (t.createdAt || "");
+          tr.innerHTML = `
+            <td>${date}</td>
+            <td>${t.service || "-"}</td>
+            <td>${t.network || "-"}</td>
+            <td>${t.details || "-"}</td>
+            <td>${t.phone || "-"}</td>
+            <td class="${t.status==='Success'?'ok':'warn'}">${t.status || "-"}</td>
+            <td>₦${Number(t.amount || 0).toLocaleString()}</td>
+          `;
+          historyBody.appendChild(tr);
+        });
+      });
     }
 
-    function addHistory(service, network, details, phone, amount) {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${new Date().toLocaleString()}</td>
-        <td>${service}</td>
-        <td>${network}</td>
-        <td>${details}</td>
-        <td>${phone}</td>
-        <td style="color:green;font-weight:bold;">Success</td>
-        <td>₦${amount}</td>
-      `;
-      document.getElementById("historyBody").prepend(row);
+    // Helpers
+    const N = (v) => Number(v || 0);
+
+    async function deductAndLog({ service, network, details, phone, amount }) {
+      // Check balance fresh
+      const uref = doc(db, "users", userId);
+      const snap = await getDoc(uref);
+      let bal = N(snap.data()?.walletBalance);
+      if (bal < N(amount)) {
+        alert("❌ Insufficient balance");
+        return;
+      }
+
+      // Deduct
+      bal -= N(amount);
+      await updateDoc(uref, { walletBalance: bal });
+      currentBalance = bal; renderBalance();
+
+      // Log
+      const txRef = collection(db, "users", userId, "transactions");
+      await addDoc(txRef, {
+        service, network, details, phone,
+        amount: N(amount), status: "Success",
+        createdAt: serverTimestamp()
+      });
+
+      alert("✅ Transaction successful");
     }
 
-    function buyData() {
+    // Buy Data
+    btnBuyData.addEventListener("click", async () => {
       const network = document.getElementById("dataNetwork").value;
       const type = document.getElementById("dataType").value;
-      const phone = document.getElementById("dataNumber").value;
-      const plan = document.getElementById("dataPlan").value;
-      const amount = parseInt(plan.split("-")[1]);
+      const phone = (document.getElementById("dataNumber").value || "").trim();
+      const planRaw = document.getElementById("dataPlan").value; // "LABEL|||AMOUNT"
+      const [label, amtStr] = planRaw.split("|||");
+      const amount = N(amtStr);
 
-      if (!phone) return alert("Enter phone number!");
-      if (balance < amount) return alert("Insufficient balance!");
+      if (!phone) { alert("Enter phone number"); return; }
 
-      balance -= amount;
-      document.getElementById("balance").innerText = balance;
-      addHistory("Data", network, `${type} ${plan.split("-")[0]}`, phone, amount);
-      alert("Data purchase successful!");
-    }
+      await deductAndLog({
+        service: "Data",
+        network,
+        details: `${type} ${label}`,
+        phone,
+        amount
+      });
+    });
 
-    function buyAirtime() {
-      const network = document.getElementById("airtimeNetwork").value;
-      const phone = document.getElementById("airtimeNumber").value;
-      const amount = parseInt(document.getElementById("airtimeAmount").value);
+    // Buy Airtime
+    btnBuyAirtime.addEventListener("click", async () => {
+      const network = document.getElementById("airNetwork").value;
+      const phone = (document.getElementById("airNumber").value || "").trim();
+      const amount = N(document.getElementById("airAmount").value);
 
-      if (!phone || !amount) return alert("Enter phone and amount!");
-      if (balance < amount) return alert("Insufficient balance!");
+      if (!phone || amount <= 0) { alert("Enter phone & valid amount"); return; }
 
-      balance -= amount;
-      document.getElementById("balance").innerText = balance;
-      addHistory("Airtime", network, `₦${amount}`, phone, amount);
-      alert("Airtime purchase successful!");
-    }
+      await deductAndLog({
+        service: "Airtime",
+        network,
+        details: `₦${amount}`,
+        phone,
+        amount
+      });
+    });
+
+    // Boot
+    ensureUser().catch(err => {
+      connNote.textContent = "Failed to connect";
+      console.error(err);
+      alert("Firebase connection failed. Check your config.");
+    });
   </script>
 </body>
-</html>
+  </html>
+  
