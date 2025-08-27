@@ -307,6 +307,58 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+    <script type="module">
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } 
+  from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { app } from "./firebase-config.js"; // ⬅️ if you separated config
+  // If your config is inline in index.html, just replace with getAuth()
+
+  const auth = getAuth(app);
+
+  // 🔹 Signup
+  document.getElementById("signup-btn").addEventListener("click", async () => {
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Signup successful ✅");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  // 🔹 Login
+  document.getElementById("login-btn").addEventListener("click", async () => {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Login successful ✅");
+    } catch (error) {
+      alert(error.message);
+    }
+  });
+
+  // 🔹 Logout
+  document.getElementById("logout-btn").addEventListener("click", async () => {
+    await signOut(auth);
+    alert("Logged out 🚪");
+  });
+
+  // 🔹 Check Auth State (hide/show dashboard)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById("logout-section").style.display = "block";
+      document.getElementById("signup-section").style.display = "none";
+      document.getElementById("login-section").style.display = "none";
+      // 👉 show wallet/dashboard here
+    } else {
+      document.getElementById("logout-section").style.display = "none";
+      document.getElementById("signup-section").style.display = "block";
+      document.getElementById("login-section").style.display = "block";
+      // 👉 hide wallet/dashboard here
+    }
+  });
 </script>
 </body>
 </html>
