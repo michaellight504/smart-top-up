@@ -115,28 +115,6 @@
 <body>
   <header>🚀 Smart Top Up</header>
 
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCTAjbeOnV_nIDALH51GaStpV8HBvHyoH4",
-    authDomain: "smart-top-up-6c988.firebaseapp.com",
-    projectId: "smart-top-up-6c988",
-    storageBucket: "smart-top-up-6c988.firebasestorage.app",
-    messagingSenderId: "517543958513",
-    appId: "1:517543958513:web:101d8882dc84df7d821650",
-    measurementId: "G-Y1TZF2QZYD"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
 </script>
   <div class="wallet">
     <span>Wallet Balance: ₦<span id="balance">5000</span></span>
@@ -286,6 +264,28 @@
       alert("Airtime purchase successful!");
     }
     
-  </script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCTAjbeOnV_nIDALH51GaStpV8HBvHyoH4",
+    authDomain: "smart-top-up-6c988.firebaseapp.com",
+    projectId: "smart-top-up-6c988",
+    storageBucket: "smart-top-up-6c988.firebasestorage.app",
+    messagingSenderId: "517543958513",
+    appId: "1:517543958513:web:101d8882dc84df7d821650",
+    measurementId: "G-Y1TZF2QZYD"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
