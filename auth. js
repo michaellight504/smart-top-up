@@ -1,0 +1,59 @@
+// Get elements
+const signupForm = document.getElementById("signup-form");
+const loginForm = document.getElementById("login-form");
+const logoutBtn = document.getElementById("logout-btn");
+const dashboard = document.getElementById("dashboard");
+
+// Sign Up
+if (signupForm) {
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert("Sign Up Successful 🎉");
+        signupForm.reset();
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  });
+}
+
+// Login
+if (loginForm) {
+  loginForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        alert("Login Successful 🎉");
+        loginForm.reset();
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  });
+}
+
+// Logout
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    auth.signOut().then(() => {
+      alert("Logged Out");
+    });
+  });
+}
+
+// Auth State (show/hide dashboard)
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    dashboard.style.display = "block";   // Show dashboard
+  } else {
+    dashboard.style.display = "none";    // Hide dashboard
+  }
+});
